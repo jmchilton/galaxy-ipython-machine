@@ -1,0 +1,164 @@
+---
+# group_vars/all
+#
+#   Common variables across all roles
+
+# Used by galaxy-os
+add_system_users: no
+
+galaxyFS_base_dir: /opt/galaxy
+galaxy_server_dir: "{{ galaxyFS_base_dir }}/galaxy-app"
+galaxy_venv_dir: "{{ galaxy_server_dir }}/.venv"
+galxy_egg_cache: "/home/{{ galaxy_user_name }}/.python-eggs"
+dev_user_name: "{{ galaxy_user_name }}"
+dev_user_home: "/home/{{ dev_user_name }}"
+dev_user_shellrc: "{{ dev_user_home }}/.bashrc"
+
+galaxy_vcs: git
+galaxy_git_repo: https://github.com/jmchilton/galaxy.git
+galaxy_changeset_id: release_15.03_docker
+galaxy_download_url: https://codeload.github.com/jmchilton/galaxy/tar.gz/release_15.03_docker
+
+galaxy_manage_clone: no
+galaxy_manage_download: yes
+
+galaxy_root: "{{ galaxy_server_dir}}"
+galaxy_db_dir: "{{ galaxyFS_base_dir }}/db"
+galaxy_db_port: 5930
+galaxy_db_log: /tmp/pSQL.log
+psql_galaxyftp_password: devboxpass
+
+galaxy_config_file: "{{ galaxy_server_dir }}/config/galaxy.ini"
+postgresql_bin_dir: /usr/lib/postgresql/9.3/bin
+
+galaxy_shed_tools_dir: "{{ galaxyFS_base_dir }}/shed_tools"
+len_file_path: "{{ galaxyFS_base_dir }}/configuration_data/len"
+dev_tool_conf: "{{ galaxyFS_base_dir }}/dev_tool_conf.xml"
+dev_tool_conf_dir: "{{ galaxyFS_base_dir }}/tools"
+
+galaxy_ini_path: "{{ galaxy_server_dir }}/config/galaxy.ini"
+galaxy_log_dir: /home/{{ galaxy_user_name }}
+
+galaxy_extras_install_packages: true
+galaxy_extras_config_proftpd: false
+
+# Auto login this user....
+galaxy_admin_user: "dev@galaxyproject.org"
+
+# Turn of uwsgi for now - doesn't work with tool reloading.
+galaxy_uwsgi: false
+galaxy_web_processes: 1
+galaxy_handler_processes: 0
+
+# defaults for paste fallbacks
+galaxy_web0_port: 8080
+galaxy_handler0_port: 9010
+galaxy_web_threadpool_workers: 10
+galaxy_handler_threadpool_workers: 10
+galaxy_docker_enabled: true
+galaxy_docker_volumes_from: ""
+
+nginx_proxy_ide: true
+nginx_proxy_reports: false
+nginx_serve_planemo_machine_web: true
+planemo_machine_web_repo: git://github.com/jmchilton/planemo-machine-web.git
+planemo_machine_web_dir: "{{ galaxyFS_base_dir }}/planemo-machine-web"
+small_tool_conf: true
+small_tool_conf_path: /opt/galaxy/tool_conf.min.xml
+
+
+supervisor_postgres_database_path: "{{ galaxy_db_dir }}"
+supervisor_slurm_config_dir: "/home/{{ galaxy_user_name }}"
+# Disable management/user features for devbox.
+supervisor_manage_reports: false
+supervisor_manage_nodeproxy: true
+supervisor_manage_proftp: false
+
+
+galaxy_config:
+  "app:main":
+    "database_connection": "postgres://{{ galaxy_user_name }}@localhost:{{ galaxy_db_port }}/galaxy"
+    "nginx_x_accel_redirect_base": "/_x_accel_redirect"
+    "nginx_x_archive_files_base": "/_x_accel_redirect"
+    "nginx_upload_store": "{{ nginx_upload_store_path }}"
+    "nginx_upload_path": "/_upload"
+    "tool_config_file": "{{ small_tool_conf_path }},config/shed_tool_conf.xml,{{ dev_tool_conf }}"
+    "admin_users": "{{ galaxy_admin_user }}"
+    "use_remote_user": "True"
+    "watch_tools": "polling"
+    "check_migrate_tools": "False"
+    "allow_library_path_paste": "True"
+  "uwsgi":
+    "socket": "127.0.0.1:4001"
+    "stats": "127.0.0.1:9191"
+    "processes": "{{ galaxy_web_processes }}"
+    "threads": "4"
+    "master": "True"
+    "logto": "{{ galaxy_log_dir }}/uwsgi.log"
+    "logdate": "True"
+    "pythonpath": "lib"
+  "server:web0":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_web0_port + 0}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_web_threadpool_workers }}"
+  "server:web1":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_web0_port + 1}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_web_threadpool_workers }}"
+  "server:web2":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_web0_port + 2}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_web_threadpool_workers }}"
+  "server:web3":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_web0_port + 3}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_web_threadpool_workers }}"
+  "server:web4":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_web0_port + 4}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_web_threadpool_workers }}"
+  "server:web5":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_web0_port + 5}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_web_threadpool_workers }}"
+  "server:handler0":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_handler0_port + 0}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_handler_threadpool_workers }}"
+  "server:handler1":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_handler0_port + 1}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_handler_threadpool_workers }}"
+  "server:handler2":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_handler0_port + 2}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_handler_threadpool_workers }}"
+  "server:handler3":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_handler0_port + 3}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_handler_threadpool_workers }}"
+  "server:handler4":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_handler0_port + 4}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_handler_threadpool_workers }}"
+  "server:handler5":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_handler0_port + 5}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_handler_threadpool_workers }}"
+  "server:handler6":
+    "use": "egg:Paste#http"
+    "port": "{{ galaxy_handler0_port + 6}}"
+    "use_threadpool": "True"
+    "threadpool_workers": "{{ galaxy_handler_threadpool_workers }}"

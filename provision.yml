@@ -1,0 +1,38 @@
+- hosts: localhost
+  connection: local
+  tasks:
+    - debug: msg="Hello Galaxy!"
+    - shell: whoami
+  pre_tasks:
+    - name: Assure galaxyFS dir exists
+      file: path={{ galaxyFS_base_dir }} state=directory owner={{ galaxy_user_name }} group={{ galaxy_user_name }}
+      sudo_user: root
+    - name: Create shed tools dir
+      file: state=directory path={{ galaxy_shed_tools_dir }}
+    - name: Install postgres system package (creates user for next step)
+      apt: pkg=postgresql state=latest
+    - name: Install python-virtualenv system package
+      apt: pkg=python-virtualenv state=latest
+      # cloudman uses PIP, I think this is preferable?
+    - name: Create database dir
+      file: path={{ galaxy_db_dir }} state=directory owner=postgres group=postgres
+      sudo_user: root
+  roles:
+      - role: galaxyprojectdotorg.galaxy-os
+        tags: image
+      - role: galaxyprojectdotorg.cloudman-database
+        sudo: yes
+        sudo_user: postgres
+        tags: database
+      - role: galaxyprojectdotorg.galaxy
+        sudo: yes
+        sudo_user: "{{ galaxy_user_name }}"
+        tags: galaxy
+      - role: galaxyprojectdotorg.galaxy-extras
+        tags: galaxyextras
+#     - role: galaxyprojectdotorg.cloudmantrackster
+#       tags: cloudmantrackster
+#     - role: smola.java
+#       tags: java
+#       java_packages:
+#         - oracle-java7-installer
