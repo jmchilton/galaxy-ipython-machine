@@ -17,6 +17,9 @@ RUN apt-get update -y && apt-get install -y software-properties-common && \
             rabbitmq-server slurm-llnl xfsprogs nginx-extras nodejs npm emacs24-nox && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN apt-get uninstall ansible
+RUN pip install ansible==1.8.4
+
 ADD scripts/setup_docker.sh /tmp/setup_docker.sh
 ADD scripts/cleanup.sh /tmp/cleanup.sh
 

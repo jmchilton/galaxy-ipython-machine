@@ -73,7 +73,7 @@ supervisor_slurm_config_dir: "/home/{{ galaxy_user_name }}"
 supervisor_manage_reports: false
 supervisor_manage_nodeproxy: true
 supervisor_manage_proftp: false
-
+supervisor_ie_proxy_autostart: true
 
 galaxy_config:
   "app:main":
@@ -88,6 +88,10 @@ galaxy_config:
     "watch_tools": "polling"
     "check_migrate_tools": "False"
     "allow_library_path_paste": "True"
+    "dynamic_proxy_manage": "False"
+    "galaxy_infrastructure_url": "http://localhost/"
+    "trust_ipython_notebook_conversion": "True"
+    "interactive_envionment_plugins_directory": "config/plugins/interactive_environments"
   "uwsgi":
     "socket": "127.0.0.1:4001"
     "stats": "127.0.0.1:9191"

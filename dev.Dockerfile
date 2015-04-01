@@ -19,6 +19,9 @@ RUN apt-get update -y && apt-get install -y software-properties-common && \
             rabbitmq-server slurm-llnl xfsprogs nginx-extras nodejs npm emacs24-nox && \
     apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN apt-get remove -y ansible
+RUN pip install ansible==1.8.4
+
 ADD scripts/setup_docker.sh /tmp/setup_docker.sh
 ADD scripts/cleanup.sh /tmp/cleanup.sh
 
@@ -34,7 +37,6 @@ ADD group_vars/all.yml /tmp/ansible/vars.yml
 ADD roles/ /tmp/ansible/roles
 ADD provision.yml /tmp/ansible/provision.yml
 RUN ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook /tmp/ansible/provision.yml --extra-vars galaxy_user_name=ubuntu --extra-vars galaxy_docker_sudo=true --extra-vars docker_package=lxc-docker-1.4.1 --tags=image -c local -e "@vars.yml"
-RUN sudo apt-get update && sudo apt-get install ansible=1.9.0
 # Database creation and migration need to happen in the same step so
 # that postgres is still running.
 RUN ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook /tmp/ansible/provision.yml --extra-vars galaxy_user_name=ubuntu --extra-vars galaxy_docker_sudo=true --extra-vars docker_package=lxc-docker-1.4.1 --tags=database -c local -e "@vars.yml" && \
