@@ -13,10 +13,10 @@ Using the Machine
 Install [Vagrant](https://www.vagrantup.com/).
 
 
-   % mkdir ipythontest
-   % cd ipythontest 
-   % wget https://raw.githubusercontent.com/jmchilton/galaxy-ipython-machine/master/test/Vagrantfile
-   % vagrant up
+    % mkdir ipythontest
+    % cd ipythontest 
+    % wget https://raw.githubusercontent.com/jmchilton/galaxy-ipython-machine/master/test/Vagrantfile
+    % vagrant up
 
 After a download an initialization process - Galaxy with IPython
 embedded should be running on port [8010](http://localhost:8010).
