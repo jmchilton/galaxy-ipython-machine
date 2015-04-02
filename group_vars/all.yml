@@ -41,9 +41,10 @@ galaxy_log_dir: /home/{{ galaxy_user_name }}
 
 galaxy_extras_install_packages: true
 galaxy_extras_config_proftpd: false
+galaxy_extras_ie_fetch_containers: true
 
 # Auto login this user....
-galaxy_admin_user: "dev@galaxyproject.org"
+galaxy_admin_user: "researcher@galaxyproject.org"
 
 # Turn of uwsgi for now - doesn't work with tool reloading.
 galaxy_uwsgi: false
@@ -88,7 +89,7 @@ galaxy_config:
     "check_migrate_tools": "False"
     "allow_library_path_paste": "True"
     "dynamic_proxy_manage": "False"
-    "galaxy_infrastructure_url": "http://localhost/"
+    "galaxy_infrastructure_web_port": "80"
     "trust_ipython_notebook_conversion": "True"
     "interactive_environment_plugins_directory": "config/plugins/interactive_environments"
   "uwsgi":
