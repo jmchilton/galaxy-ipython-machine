@@ -82,7 +82,6 @@ galaxy_config:
     "nginx_x_archive_files_base": "/_x_accel_redirect"
     "nginx_upload_store": "{{ nginx_upload_store_path }}"
     "nginx_upload_path": "/_upload"
-    "tool_config_file": "{{ small_tool_conf_path }},config/shed_tool_conf.xml,{{ dev_tool_conf }}"
     "admin_users": "{{ galaxy_admin_user }}"
     "use_remote_user": "True"
     "watch_tools": "polling"
@@ -91,7 +90,7 @@ galaxy_config:
     "dynamic_proxy_manage": "False"
     "galaxy_infrastructure_url": "http://localhost/"
     "trust_ipython_notebook_conversion": "True"
-    "interactive_envionment_plugins_directory": "config/plugins/interactive_environments"
+    "interactive_environment_plugins_directory": "config/plugins/interactive_environments"
   "uwsgi":
     "socket": "127.0.0.1:4001"
     "stats": "127.0.0.1:9191"
