@@ -21,6 +21,10 @@ Install [Vagrant](https://www.vagrantup.com/).
 After a download an initialization process - Galaxy with IPython
 embedded should be running on port [8010](http://localhost:8010).
 
+If all you want to do is explore using IPython from within Galaxy you
+should be ready to go, the rest of these instructions are for building
+the VM you just downloaded.
+
 Setup Build
 -----------------------
 
