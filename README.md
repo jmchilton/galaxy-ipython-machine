@@ -53,5 +53,3 @@ How it works
 See the analogous project
 [planemo-machine](https://github.com/galaxyproject/planemo-machine)
 for more details.
-
-
