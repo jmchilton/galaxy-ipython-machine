@@ -41,7 +41,7 @@ galaxy_log_dir: /home/{{ galaxy_user_name }}
 
 galaxy_extras_install_packages: true
 galaxy_extras_config_proftpd: false
-galaxy_extras_ie_fetch_containers: true
+galaxy_extras_ie_fetch_ipython: true
 
 # Auto login this user....
 galaxy_admin_user: "researcher@galaxyproject.org"
